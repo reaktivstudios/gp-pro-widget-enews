@@ -125,8 +125,8 @@ class GP_Pro_Widget_Enews
 	public function genesis_widgets_block( $blocks ) {
 
 		$blocks['genesis-widgets'] = array(
-			'tab'		=> __( 'Genesis Widgets', 'gpwpk' ),
-			'title'		=> __( 'Genesis Widgets', 'gpwpk' ),
+			'tab'		=> __( 'Genesis Widgets', 'gpwen' ),
+			'title'		=> __( 'Genesis Widgets', 'gpwen' ),
 			'slug'		=> 'genesis_widgets',
 		);
 
@@ -145,8 +145,8 @@ class GP_Pro_Widget_Enews
 		$sections['genesis_widgets']	= array(
 
 			'genesis-widget-setup'	=> array(
-				'headline'	=> __( 'Genesis Widgets', 'gpwpk' ),
-				'intro'		=> __( 'Target and style individual widgets such as eNews Extended', 'gpwpk' ),
+				'headline'	=> __( 'Genesis Widgets', 'gpwen' ),
+				'intro'		=> __( 'Target and style individual widgets such as eNews Extended', 'gpwen' ),
 				'title'		=> '',
 				'data'		=> '',
 			),
@@ -164,18 +164,54 @@ class GP_Pro_Widget_Enews
 						'type'		=> 'background-color'
 					),
 					'enews-widget-title-color'	=> array(
-						'label'		=> __( 'Title Color', 'gppro' ),
+						'label'		=> __( 'Title Color', 'gpwen' ),
 						'input'		=> 'color',
 						'field'		=> 'enews-widget-title-color',
 						'target'	=> $class.' .enews-widget .widget-title',
 						'type'		=> 'color'
 					),
 					'enews-widget-text-color'	=> array(
-						'label'		=> __( 'Text Color', 'gppro' ),
+						'label'		=> __( 'Text Color', 'gpwen' ),
 						'input'		=> 'color',
 						'field'		=> 'enews-widget-text-color',
 						'target'	=> $class.' .enews-widget',
 						'type'		=> 'color'
+					),
+				),
+			),
+
+			'enews-widget-typography'	=> array(
+				'title'	=> __( 'Before and After Text Typography', 'gpwen' ),
+				'data'	=> array(
+					'enews-widget-gen-stack'	=> array(
+						'label'		=> __( 'Font Stack', 'gpwen' ),
+						'input'		=> 'font-stack',
+						'field'		=> 'enews-widget-gen-stack',
+						'target'	=> $class.' .enews-widget',
+						'type'		=> 'font-family'
+					),
+					'enews-widget-gen-size'	=> array(
+						'label'		=> __( 'Font Size', 'gpwen' ),
+						'input'		=> 'font-size',
+						'scale'		=> 'text',
+						'field'		=> 'enews-widget-gen-size',
+						'target'	=> $class.' .enews-widget',
+						'type'		=> 'font-size',
+					),
+					'enews-widget-gen-weight'	=> array(
+						'label'		=> __( 'Font Weight', 'gpwen' ),
+						'input'		=> 'font-weight',
+						'field'		=> 'enews-widget-gen-weight',
+						'target'	=> $class.' .enews-widget',
+						'type'		=> 'font-weight',
+						'tip'		=> __( 'Certain fonts will not display every weight.', 'gpwen' )
+					),
+					'enews-widget-gen-text-transform'	=> array(
+						'label'		=> __( 'Text Appearance', 'gpwen' ),
+						'input'		=> 'text-transform',
+						'field'		=> 'enews-widget-gen-text-transform',
+						'target'	=> $class.' .enews-widget p',
+						'type'		=> 'text-transform'
 					),
 				),
 			),
@@ -190,9 +226,20 @@ class GP_Pro_Widget_Enews
 
 	public function enews_defaults_base( $defaults ) {
 
-		$defaults['enews-widget-back']          = '#333333';
-		$defaults['enews-widget-title-color']   = '#ffffff';
-		$defaults['enews-widget-text-color']   = '#999999';
+		// General
+		$defaults['enews-widget-back']                  = '#333333';
+		$defaults['enews-widget-title-color']           = '#ffffff';
+		$defaults['enews-widget-text-color']            = '#999999';
+
+		// General Typography
+		$defaults['enews-widget-gen-stack']             = 'lato';
+		$defaults['enews-widget-gen-size']              = '16';
+		$defaults['enews-widget-gen-weight']            = '300';
+		$defaults['enews-widget-gen-text-transform']    = 'none';
+
+		// Text Input Colors
+
+		// Text Input Typography
 
 		// Allow child theme add-ons to override eNews defaults
 		$defaults	= apply_filters( 'gppro_enews_set_defaults', $defaults );
@@ -205,21 +252,39 @@ class GP_Pro_Widget_Enews
 
 		$css	.= '/* eNews Extended Widget */'."\n";
 
-		// General Colors
+		// enews-widget
 		$css	.= $class.' .enews-widget { ';
 
+			// Colors
 			if ( isset( $data['enews-widget-back'] ) && !empty( $data['enews-widget-back'] ) && $data['enews-widget-back'] !== GP_Pro_Helper::get_default( 'enews-widget-back' ) )
 				$css	.= 'background-color: '.$data['enews-widget-back'].'; ';
 
 			if ( isset( $data['enews-widget-text-color'] ) && !empty( $data['enews-widget-text-color'] ) && $data['enews-widget-text-color'] !== GP_Pro_Helper::get_default( 'enews-widget-text-color' ) )
 				$css	.= 'color: '.$data['enews-widget-text-color'].'; ';
 
-
 		$css	.= '}'."\n";
 
+		// Widget Title Color
 		if ( isset( $data['enews-widget-title-color'] ) && !empty( $data['enews-widget-title-color'] ) && $data['enews-widget-title-color'] !== GP_Pro_Helper::get_default( 'enews-widget-title-color' ) )
 			$css	.= $class.' .enews-widget .widget-title { color: '.$data['enews-widget-title-color'].'; }'."\n";
 
+		// Paragraphs (regular widget text Above & Below)
+		$css	.= $class.' .enews-widget p { ';
+
+			// Typography
+			if ( isset( $data['enews-widget-gen-stack'] ) && !empty( $data['enews-widget-gen-stack'] ) && $data['enews-widget-gen-stack'] !== GP_Pro_Helper::get_default( 'enews-widget-gen-stack' ) )
+				$css	.= 'font-family: '.GP_Pro_Builder::stack_css( $data['enews-widget-gen-stack'] ).'; ';
+
+			if ( isset( $data['enews-widget-gen-size'] ) && !empty( $data['enews-widget-gen-size'] ) && $data['enews-widget-gen-size'] !== GP_Pro_Helper::get_default( 'enews-widget-gen-size' ) )
+				$css	.= 'font-size: '.$data['enews-widget-gen-size'].'px; font-size: '.( $data['enews-widget-gen-size'] / 10 ).'rem; ';
+
+			if ( isset( $data['enews-widget-gen-weight'] ) && !empty( $data['enews-widget-gen-weight'] ) && $data['enews-widget-gen-weight'] !== GP_Pro_Helper::get_default( 'enews-widget-gen-weight' ) )
+				$css	.= 'font-weight: '.$data['enews-widget-gen-weight'].'; ';
+
+			if ( isset( $data['enews-widget-gen-transform'] ) && !empty( $data['enews-widget-gen-transform'] ) && $data['enews-widget-gen-transform'] !== GP_Pro_Helper::get_default( 'enews-widget-gen-transform' ) )
+				$css	.= 'text-transform: '.$data['enews-widget-gen-transform'].'; ';
+
+		$css	.= '}'."\n";
 
 		return $css;
 
