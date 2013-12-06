@@ -364,7 +364,6 @@ class GP_Pro_Widget_Enews
 			),
 
 			'enews-widget-button-colors'	=> array(
-				// 'headline'	=> __( 'eNews Submit Button', 'gpwen' ),
 				'title'		=> __( 'eNews Submit Button Colors', 'gpwen' ),
 				'data'		=> array(
 					'enews-widget-button-back'	=> array(
@@ -380,7 +379,7 @@ class GP_Pro_Widget_Enews
 						'sub'		=> __( 'Hover', 'gpwen' ),
 						'input'		=> 'color',
 						'field'		=> 'enews-widget-button-back-hov',
-						'target'	=> $class.' .enews-widget input:hover[type="submit"], '.$class.' .enews-widget input:focus[type="submit"]',
+						'target'	=> $class.' .enews-widget input:hover[type="submit"]',
 						'type'		=> 'background-color'
 					),
 					'enews-widget-button-text'	=> array(
@@ -396,7 +395,7 @@ class GP_Pro_Widget_Enews
 						'sub'		=> __( 'Hover', 'gpwen' ),
 						'input'		=> 'color',
 						'field'		=> 'enews-widget-button-text-hov',
-						'target'	=> $class.' .enews-widget input:hover[type="submit"], '.$class.' .enews-widget input:focus[type="submit"]',
+						'target'	=> $class.' .enews-widget input:hover[type="submit"]',
 						'type'		=> 'color'
 					),
 				),
