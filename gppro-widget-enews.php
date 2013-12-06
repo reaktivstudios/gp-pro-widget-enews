@@ -52,6 +52,7 @@ class GP_Pro_Widget_Enews
 		// general backend
 		add_action			(	'plugins_loaded',					array(	$this,	'textdomain'				)			);
 		add_action			(	'admin_notices',					array(	$this,	'gppro_active_check'		),	10		);
+		add_action			(	'admin_notices',					array(	$this,	'enews_active_check'		),	10		);
 
 		// GP Pro specific
 		add_filter			(	'gppro_admin_block_add',			array(	$this,	'genesis_widgets_block'		),	61		);
@@ -61,7 +62,10 @@ class GP_Pro_Widget_Enews
 		add_filter			(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'		),	15		);
 
 		// GP Pro CSS build filters
-		add_filter			(	'gppro_css_builder',				array(	$this,	'enews_widget_css'		),	10,	3	);
+		add_filter			(	'gppro_css_builder',				array(	$this,	'enews_widget_css'			),	10,	3	);
+
+		// activation hooks
+		register_deactivation_hook	( __FILE__,						array(	$this,	'enews_clear_check'		)			);
 	}
 
 	/**
@@ -72,9 +76,12 @@ class GP_Pro_Widget_Enews
 	 */
 
 	public static function getInstance() {
+
 		if ( !self::$instance )
 			self::$instance = new self;
+
 		return self::$instance;
+
 	}
 
 	/**
@@ -86,6 +93,21 @@ class GP_Pro_Widget_Enews
 	public function textdomain() {
 
 		load_plugin_textdomain( 'gpwen', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
+	}
+
+	/**
+	 * set widget dependency data
+	 *
+	 * @return widget dependency info
+	 */
+
+	static function plugin_info() {
+
+		return array(
+			'name'	=> __( 'Genesis eNews Extended', 'gpwen' ),
+			'file'	=> 'genesis-enews-extended/plugin.php'
+		);
 
 	}
 
@@ -102,9 +124,9 @@ class GP_Pro_Widget_Enews
 		if ( $screen->parent_file !== 'plugins.php' )
 			return;
 
-		if ( !is_plugin_active( 'genesis-palette-pro/genesis-palette-pro.php' ) || !is_plugin_active( 'genesis-enews-extended/plugin.php' ) ) :
+		if ( !is_plugin_active( 'genesis-palette-pro/genesis-palette-pro.php' ) ) :
 
-			echo '<div id="message" class="error fade below-h2"><p><strong>'.__( 'This plugin requires Genesis Design Palette Pro and Genesis eNews Extended to function.', 'gpwen' ).'</strong></p></div>';
+			echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function.' ), 'gpwen' ).'</strong></p></div>';
 
 			// hide activation method
 			unset( $_GET['activate'] );
@@ -112,6 +134,43 @@ class GP_Pro_Widget_Enews
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 
 		endif;
+
+	}
+
+	/**
+	 * check for correct child theme being active
+	 *
+	 * @return notice
+	 */
+
+	public function enews_active_check() {
+
+		$screen = get_current_screen();
+
+		if ( $screen->base !== 'genesis_page_genesis-palette-pro' )
+			return;
+
+		// get our Genesis Plugin dependency name
+		$plugininfo	= self::plugin_info();
+
+		// check for dismissed setting
+		$ignored	= get_option( 'gppro-warning-'.$plugininfo['file'] );
+
+		if ( $ignored == 1 )
+			return;
+
+		// check if plugin is active, display warning
+		$enews_plugin_active	= is_plugin_active( $plugininfo['file'] );
+
+		if ( ! $enews_plugin_active ) :
+
+			echo '<div id="message" class="error fade below-h2 gppro-admin-warning"><p>';
+			echo '<strong>'.__( 'Warning: You have the '.$plugininfo['name'].' widget add-on enabled but do not have the '.$plugininfo['name'].' plugin active.', 'gpwen' ).'</strong>';
+			echo '<span class="ignore" data-child="'.$plugininfo['file'].'">'.__( 'Ignore this message', 'gpwen' ).'</span>';
+			echo '</p></div>';
+
+		endif;
+
 
 	}
 
@@ -601,6 +660,22 @@ class GP_Pro_Widget_Enews
 		$css	.= '}'."\n";
 
 		return $css;
+
+	}
+
+	/**
+	 * clear warning check setting
+	 *
+	 * @return void
+	 */
+
+	public function enews_clear_check() {
+
+		// get our plugin dependency name
+		$plugininfo	= self::plugin_info();
+
+		// delete the dismissed setting
+		delete_option( 'gppro-warning-'.$plugininfo['file'] );
 
 	}
 
