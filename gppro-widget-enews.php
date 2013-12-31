@@ -368,6 +368,22 @@ class GP_Pro_Widget_Enews
 						'max'		=> '48',
 						'step'		=> '1'
 					),
+					'enews-widget-field-input-box-shadow'	=> array(
+						'label'		=> __( 'Box Shadow', 'gpwen' ),
+						'input'		=> 'radio',
+						'options'	=> array(
+							array(
+								'label'	=> __( 'Keep', 'gpwen' ),
+								'value'	=> 'inherit',
+							),
+							array(
+								'label'	=> __( 'Remove', 'gpwen' ),
+								'value'	=> 'none'
+							),
+						),
+						'target'	=> $class.' .enews-widget input[type="text"], '.$class.' .enews-widget input[type="email"]',
+						'selector'	=> 'box-shadow'
+					),
 				),
 			),
 
@@ -520,6 +536,7 @@ class GP_Pro_Widget_Enews
 		$defaults['enews-widget-field-input-border-radius']     = '3';
 		$defaults['enews-widget-field-input-padding']           = '16';
 		$defaults['enews-widget-field-input-margin-bottom']     = '16';
+		$defaults['enews-widget-field-input-box-shadow']        = 'inherit';
 
 		// Submit Button
 		$defaults['enews-widget-button-back']                   = '#f15123';
@@ -624,9 +641,8 @@ class GP_Pro_Widget_Enews
 			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-margin-bottom' ) )
 				$css	.= GP_Pro_Builder::px_rem_css( 'margin-bottom', $data['enews-widget-field-input-margin-bottom'] );
 
-			// More padding?
-
-			// Margins?
+			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-box-shadow' ) )
+				$css	.= GP_Pro_Builder::text_css( 'box-shadow', $data['enews-widget-field-input-box-shadow'] );
 
 		$css	.= '}'."\n";
 
