@@ -183,11 +183,14 @@ class GP_Pro_Widget_Enews
 
 	public function genesis_widgets_block( $blocks ) {
 
-		$blocks['genesis-widgets'] = array(
-			'tab'		=> __( 'Genesis Widgets', 'gpwen' ),
-			'title'		=> __( 'Genesis Widgets', 'gpwen' ),
-			'slug'		=> 'genesis_widgets',
-		);
+		// Only add the block if it's not already set (another Genesis widget plugin has already added it)
+		if ( ! isset( $blocks['genesis-widgets'] ) ) {
+			$blocks['genesis-widgets'] = array(
+				'tab'		=> __( 'Genesis Widgets', 'gpwen' ),
+				'title'		=> __( 'Genesis Widgets', 'gpwen' ),
+				'slug'		=> 'genesis_widgets',
+			);
+		}
 
 		return $blocks;
 
