@@ -304,7 +304,7 @@ class GP_Pro_Widget_Enews
 					),
 
 
-					'enews-widget-typography-divider' => array(
+					'enews-widget-field-input-typography-divider' => array(
 						'title'		=> __( 'Typography', 'gpwen' ),
 						'input'		=> 'divider',
 						'style'		=> 'block-thin'
@@ -338,7 +338,7 @@ class GP_Pro_Widget_Enews
 
 
 
-					'enews-widget-borders-divider' => array(
+					'enews-widget-field-input-borders-divider' => array(
 						'title'		=> __( 'Borders', 'gpwen' ),
 						'input'		=> 'divider',
 						'style'		=> 'block-thin'
@@ -374,9 +374,34 @@ class GP_Pro_Widget_Enews
 						'max'		=> '16',
 						'step'		=> '1'
 					),
+					'enews-widget-field-input-border-color-focus'	=> array(
+						'label'		=> __( 'Border Color', 'gpwen' ),
+						'sub'		=> __( 'Focus', 'gpwen' ),
+						'input'		=> 'color',
+						'target'	=> $class.' .enews-widget input[type="text"]:focus, '.$class.' .enews-widget input[type="email"]:focus',
+						'selector'	=> 'border-color',
+					),
+					'enews-widget-field-input-border-type-focus'	=> array(
+						'label'		=> __( 'Border Type', 'gpwen' ),
+						'sub'		=> __( 'Focus', 'gpwen' ),
+						'input'		=> 'borders',
+						'target'	=> $class.' .enews-widget input[type="text"]:focus, '.$class.' .enews-widget input[type="email"]:focus',
+						'selector'	=> 'border-style',
+						'tip'		=> __( 'Setting the type to "none" will remove the border completely.', 'gpwen' )
+					),
+					'enews-widget-field-input-border-width-focus'	=> array(
+						'label'		=> __( 'Border Width', 'gpwen' ),
+						'sub'		=> __( 'Focus', 'gpwen' ),
+						'input'		=> 'spacing',
+						'target'	=> $class.' .enews-widget input[type="text"]:focus, '.$class.' .enews-widget input[type="email"]:focus',
+						'selector'	=> 'border-width',
+						'min'		=> '0',
+						'max'		=> '10',
+						'step'		=> '1'
+					),
 
 
-					'enews-widget-padding-margins-divider' => array(
+					'enews-widget-field-input-padding-margins-divider' => array(
 						'title'		=> __( 'Padding & Margin', 'gpwen' ),
 						'input'		=> 'divider',
 						'style'		=> 'block-thin'
@@ -518,7 +543,7 @@ class GP_Pro_Widget_Enews
 					),
 
 
-					'enews-widget-padding-divider' => array(
+					'enews-widget-button-padding-divider' => array(
 						'title'		=> __( 'Padding & Margin', 'gpwen' ),
 						'input'		=> 'divider',
 						'style'		=> 'block-thin'
@@ -580,49 +605,52 @@ class GP_Pro_Widget_Enews
 	public function enews_defaults_base( $defaults ) {
 
 		// General
-		$defaults['enews-widget-back']                          = '#333333';
-		$defaults['enews-widget-title-color']                   = '#ffffff';
-		$defaults['enews-widget-text-color']                    = '#999999';
+		$defaults['enews-widget-back']                             = '#333333';
+		$defaults['enews-widget-title-color']                      = '#ffffff';
+		$defaults['enews-widget-text-color']                       = '#999999';
 
 		// General Typography
-		$defaults['enews-widget-gen-stack']                     = 'lato';
-		$defaults['enews-widget-gen-size']                      = '16';
-		$defaults['enews-widget-gen-weight']                    = '300';
-		$defaults['enews-widget-gen-transform']                 = 'none';
-		$defaults['enews-widget-gen-text-margin-bottom']        = '24';
+		$defaults['enews-widget-gen-stack']                        = 'lato';
+		$defaults['enews-widget-gen-size']                         = '16';
+		$defaults['enews-widget-gen-weight']                       = '300';
+		$defaults['enews-widget-gen-transform']                    = 'none';
+		$defaults['enews-widget-gen-text-margin-bottom']           = '24';
 
 		// Field Inputs
-		$defaults['enews-widget-field-input-back']              = '#ffffff';
-		$defaults['enews-widget-field-input-text-color']        = '#999999';
-		$defaults['enews-widget-field-input-stack']             = 'lato';
-		$defaults['enews-widget-field-input-size']              = '14';
-		$defaults['enews-widget-field-input-weight']            = '300';
-		$defaults['enews-widget-field-input-transform']         = 'none';
-		$defaults['enews-widget-field-input-border-color']      = '#dddddd';
-		$defaults['enews-widget-field-input-border-type']       = 'solid';
-		$defaults['enews-widget-field-input-border-width']      = '1';
-		$defaults['enews-widget-field-input-border-radius']     = '3';
-		$defaults['enews-widget-field-input-pad-top']           = '16';
-		$defaults['enews-widget-field-input-pad-bottom']        = '16';
-		$defaults['enews-widget-field-input-pad-left']          = '16';
-		$defaults['enews-widget-field-input-pad-right']         = '16';
-		$defaults['enews-widget-field-input-margin-bottom']     = '16';
-		$defaults['enews-widget-field-input-box-shadow']        = 'inherit';
+		$defaults['enews-widget-field-input-back']                 = '#ffffff';
+		$defaults['enews-widget-field-input-text-color']           = '#999999';
+		$defaults['enews-widget-field-input-stack']                = 'lato';
+		$defaults['enews-widget-field-input-size']                 = '14';
+		$defaults['enews-widget-field-input-weight']               = '300';
+		$defaults['enews-widget-field-input-transform']            = 'none';
+		$defaults['enews-widget-field-input-border-color']         = '#dddddd';
+		$defaults['enews-widget-field-input-border-type']          = 'solid';
+		$defaults['enews-widget-field-input-border-width']         = '1';
+		$defaults['enews-widget-field-input-border-radius']        = '3';
+		$defaults['enews-widget-field-input-border-color-focus']   = '#dddddd';
+		$defaults['enews-widget-field-input-border-type-focus']    = 'solid';
+		$defaults['enews-widget-field-input-border-width-focus']   = '1';
+		$defaults['enews-widget-field-input-pad-top']              = '16';
+		$defaults['enews-widget-field-input-pad-bottom']           = '16';
+		$defaults['enews-widget-field-input-pad-left']             = '16';
+		$defaults['enews-widget-field-input-pad-right']            = '16';
+		$defaults['enews-widget-field-input-margin-bottom']        = '16';
+		$defaults['enews-widget-field-input-box-shadow']           = 'inherit';
 
 		// Submit Button
-		$defaults['enews-widget-button-back']                   = '#f15123';
-		$defaults['enews-widget-button-back-hov']               = '#ffffff';
-		$defaults['enews-widget-button-text-color']             = '#ffffff';
-		$defaults['enews-widget-button-text-color-hov']         = '#333333';
-		$defaults['enews-widget-button-transform']              = 'uppercase';
-		$defaults['enews-widget-button-stack']                  = 'helvetica';
-		$defaults['enews-widget-button-size']                   = '14';
-		$defaults['enews-widget-button-weight']                 = '300';
-		$defaults['enews-widget-button-pad-top']                = '16';
-		$defaults['enews-widget-button-pad-bottom']             = '16';
-		$defaults['enews-widget-button-pad-left']               = '24';
-		$defaults['enews-widget-button-pad-right']              = '24';
-		$defaults['enews-widget-button-margin-bottom']          = '0';
+		$defaults['enews-widget-button-back']                      = '#f15123';
+		$defaults['enews-widget-button-back-hov']                  = '#ffffff';
+		$defaults['enews-widget-button-text-color']                = '#ffffff';
+		$defaults['enews-widget-button-text-color-hov']            = '#333333';
+		$defaults['enews-widget-button-transform']                 = 'uppercase';
+		$defaults['enews-widget-button-stack']                     = 'helvetica';
+		$defaults['enews-widget-button-size']                      = '14';
+		$defaults['enews-widget-button-weight']                    = '300';
+		$defaults['enews-widget-button-pad-top']                   = '16';
+		$defaults['enews-widget-button-pad-bottom']                = '16';
+		$defaults['enews-widget-button-pad-left']                  = '24';
+		$defaults['enews-widget-button-pad-right']                 = '24';
+		$defaults['enews-widget-button-margin-bottom']             = '0';
 
 		// Allow child theme add-ons to override eNews defaults
 		$defaults	= apply_filters( 'gppro_enews_set_defaults', $defaults );
@@ -731,6 +759,21 @@ class GP_Pro_Widget_Enews
 			// Box Shadow (on/off)
 			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-box-shadow' ) )
 				$css	.= GP_Pro_Builder::text_css( 'box-shadow', $data['enews-widget-field-input-box-shadow'] );
+
+		$css	.= '}'."\n";
+
+		// Field Inputs Focus state
+		$css	.= $class.' .enews-widget input[type="text"]:focus, '.$class.' .enews-widget input[type="email"]:focus { ';
+
+			// Borders
+			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-border-color-focus' ) )
+				$css	.= GP_Pro_Builder::hexcolor_css( 'border-color', $data['enews-widget-field-input-border-color-focus'] );
+
+			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-border-type-focus' ) )
+				$css	.= GP_Pro_Builder::text_css( 'border-style', $data['enews-widget-field-input-border-type-focus'] );
+
+			if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-input-border-width-focus' ) )
+				$css	.= GP_Pro_Builder::px_css( 'border-width', $data['enews-widget-field-input-border-width-focus'] );
 
 		$css	.= '}'."\n";
 
