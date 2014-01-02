@@ -299,6 +299,11 @@ class GP_Pro_Widget_Enews
 						'target'	=> $class.' .enews-widget input[type="text"], '.$class.' .enews-widget input[type="email"]',
 						'selector'	=> 'color'
 					),
+					'enews-widget-typography-divider' => array(
+						'title'		=> __( 'Typography', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
+					),
 					'enews-widget-field-input-stack'	=> array(
 						'label'		=> __( 'Font Stack', 'gpwen' ),
 						'input'		=> 'font-stack',
@@ -318,6 +323,11 @@ class GP_Pro_Widget_Enews
 						'target'	=> $class.' .enews-widget input[type="text"], '.$class.' .enews-widget input[type="email"]',
 						'selector'	=> 'font-weight',
 						'tip'		=> __( 'Certain fonts will not display every weight.', 'gpwen' )
+					),
+					'enews-widget-borders-divider' => array(
+						'title'		=> __( 'Borders', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
 					),
 					'enews-widget-field-input-border-color'	=> array(
 						'label'		=> __( 'Border Color', 'gpwen' ),
@@ -349,6 +359,11 @@ class GP_Pro_Widget_Enews
 						'min'		=> '0',
 						'max'		=> '16',
 						'step'		=> '1'
+					),
+					'enews-widget-padding-margins-divider' => array(
+						'title'		=> __( 'Padding & Margin', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
 					),
 					'enews-widget-field-input-padding'	=> array(
 						'label'		=> __( 'Field Padding', 'gpwen' ),
@@ -387,9 +402,14 @@ class GP_Pro_Widget_Enews
 				),
 			),
 
-			'enews-widget-button-colors'	=> array(
-				'title'		=> __( 'Submit Button Colors', 'gpwen' ),
+			'enews-widget-submit-button'	=> array(
+				'title'		=> __( 'Submit Button', 'gpwen' ),
 				'data'		=> array(
+					'enews-widget-button-colors-divider' => array(
+						'title'		=> __( 'Colors', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
+					),
 					'enews-widget-button-back'	=> array(
 						'label'		=> __( 'Background', 'gpwen' ),
 						'sub'		=> __( 'Base', 'gpwen' ),
@@ -418,12 +438,11 @@ class GP_Pro_Widget_Enews
 						'target'	=> $class.' .enews-widget input:hover[type="submit"]',
 						'selector'	=> 'color'
 					),
-				),
-			),
-
-			'enews-widget-button-typography'	=> array(
-				'title'		=> __( 'Submit Button Typography', 'gpwen' ),
-				'data'		=> array(
+					'enews-widget-button-typography-divider' => array(
+						'title'		=> __( 'Typography', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
+					),
 					'enews-widget-button-stack'	=> array(
 						'label'		=> __( 'Font Stack', 'gpwen' ),
 						'input'		=> 'font-stack',
@@ -450,20 +469,11 @@ class GP_Pro_Widget_Enews
 						'target'	=> $class.' .enews-widget input[type="submit"]',
 						'selector'	=> 'text-transform'
 					),
-					'enews-widget-button-margin-bottom' => array(
-						'label'		=> __( 'Bottom Margin', 'gpwen' ),
-						'input'		=> 'spacing',
-						'target'	=> $class.' .enews-widget input[type="submit"]',
-						'selector'	=> 'margin-bottom',
-						'min'		=> '0',
-						'max'		=> '48',
-						'step'		=> '1'
+					'enews-widget-padding-divider' => array(
+						'title'		=> __( 'Padding & Margin', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
 					),
-				),
-			),
-			'enews-widget-button-padding'	=> array(
-				'title'		=> __( 'Submit Button Padding', 'gpwen' ),
-				'data'		=> array(
 					'enews-widget-button-pad-top'	=> array(
 						'label'		=> __( 'Top', 'gpwen' ),
 						'input'		=> 'spacing',
@@ -500,9 +510,17 @@ class GP_Pro_Widget_Enews
 						'max'		=> '32',
 						'step'		=> '1'
 					),
+					'enews-widget-button-margin-bottom' => array(
+						'label'		=> __( 'Bottom Margin', 'gpwen' ),
+						'input'		=> 'spacing',
+						'target'	=> $class.' .enews-widget input[type="submit"]',
+						'selector'	=> 'margin-bottom',
+						'min'		=> '0',
+						'max'		=> '48',
+						'step'		=> '1'
+					),
 				),
 			),
-
 		); // end section
 
 
