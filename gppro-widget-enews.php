@@ -2,7 +2,7 @@
 /*
 Plugin Name: Genesis Design Palette Pro - eNews Widget
 Plugin URI: http://genesisdesignpro.com
-Description: Targeted styling for Genesis eNews Extended widget
+Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Extended widget.
 Author: Reaktiv Studios
 Version: 0.0.1.1
 Requires at least: 3.5
@@ -50,22 +50,25 @@ class GP_Pro_Widget_Enews
 	private function __construct() {
 
 		// general backend
-		add_action			(	'plugins_loaded',					array(	$this,	'textdomain'				)			);
-		add_action			(	'admin_notices',					array(	$this,	'gppro_active_check'		),	10		);
-		add_action			(	'admin_notices',					array(	$this,	'enews_active_check'		),	10		);
+		add_action			(	'plugins_loaded',					array(	$this,	'textdomain'					)			);
+		add_action			(	'admin_notices',					array(	$this,	'gppro_active_check'			),	10		);
+		add_action			(	'admin_notices',					array(	$this,	'enews_active_check'			),	10		);
 
 		// GP Pro specific
-		add_filter			(	'gppro_admin_block_add',			array(	$this,	'genesis_widgets_block'		),	61		);
-		add_filter			(	'gppro_sections',					array(	$this,	'genesis_widgets_section'	),	10,	2	);
+		add_filter			(	'gppro_admin_block_add',			array(	$this,	'genesis_widgets_block'			),	61		);
+		add_filter			(	'gppro_sections',					array(	$this,	'genesis_widgets_section'		),	10,	2	);
 
 		// Defaults
-		add_filter			(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'		),	15		);
+		add_filter			(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'			),	15		);
+
+		// Modify defaults if known child theme is set
+		add_filter			(	'gppro_enews_set_defaults',			array(	$this,	'enews_defaults_child_themes'	),	15		);
 
 		// GP Pro CSS build filters
-		add_filter			(	'gppro_css_builder',				array(	$this,	'enews_widget_css'			),	10,	3	);
+		add_filter			(	'gppro_css_builder',				array(	$this,	'enews_widget_css'				),	10,	3	);
 
 		// activation hooks
-		register_deactivation_hook	( __FILE__,						array(	$this,	'enews_clear_check'		)			);
+		register_deactivation_hook	( __FILE__,						array(	$this,	'enews_clear_check'				)			);
 	}
 
 	/**
@@ -657,6 +660,51 @@ class GP_Pro_Widget_Enews
 
 		return $defaults;
 
+	}
+
+	public function enews_defaults_child_themes( $defaults ) {
+
+		// Set defaults based on child theme (if known)
+		switch ( get_stylesheet() ) {
+
+			// Minimum Pro Child theme
+			case 'minimum-pro':
+				$defaults['enews-widget-button-back']                      = '#0ebfe9';
+				break;
+
+			// Metro Pro Child theme
+			case 'metro-pro':
+				$defaults['enews-widget-button-back']                      = '#f96e5b';
+				$defaults['enews-widget-field-input-box-shadow']           = 'none';
+				$defaults['enews-widget-field-input-margin-bottom']        = '12';
+				break;
+
+			// Expose Pro Child theme
+			case 'expose-pro':
+				$defaults['enews-widget-button-back']                      = '#ffffff';
+				$defaults['enews-widget-button-back-hov']                  = '#000000';
+				$defaults['enews-widget-button-text-color']                = '#000000';
+				$defaults['enews-widget-button-text-color-hov']            = '#ffffff';
+				$defaults['enews-widget-button-pad-top']                   = '16';
+				$defaults['enews-widget-button-pad-bottom']                = '15';
+				$defaults['enews-widget-button-pad-left']                  = '24';
+				$defaults['enews-widget-button-pad-right']                 = '24';
+
+				$defaults['enews-widget-field-input-border-type']          = 'none';
+				$defaults['enews-widget-field-input-border-type-focus']    = 'none';
+				$defaults['enews-widget-field-input-box-shadow']           = 'none';
+				$defaults['enews-widget-field-input-margin-bottom']        = '10';
+				$defaults['enews-widget-field-input-pad-top']              = '16';
+				$defaults['enews-widget-field-input-pad-bottom']           = '15';
+				$defaults['enews-widget-field-input-pad-left']             = '24';
+				$defaults['enews-widget-field-input-pad-right']            = '24';
+				break;
+
+			default:
+				break;
+		}
+
+		return $defaults;
 	}
 
 	public function enews_widget_css( $css, $data, $class ) {
