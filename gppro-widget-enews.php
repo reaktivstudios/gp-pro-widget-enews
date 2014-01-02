@@ -207,7 +207,7 @@ class GP_Pro_Widget_Enews
 
 	public function genesis_widgets_section( $sections, $class ) {
 
-		$sections['genesis_widgets']	= array(
+		$genesis_widgets	= array(
 
 			'genesis-widget-setup'	=> array(
 				'headline'	=> __( 'Genesis Widgets', 'gpwen' ),
@@ -600,6 +600,12 @@ class GP_Pro_Widget_Enews
 			),
 		); // end section
 
+		// If another plugin has created the genesis widgets block, then merge ours in, otherwise we can set it.
+		if ( isset( $sections['genesis_widgets'] )) {
+			$sections['genesis_widgets'] = array_merge( $sections['genesis_widgets'], $genesis_widgets );
+		} else {
+			$sections['genesis_widgets'] = $genesis_widgets;
+		}
 
 		return $sections;
 
