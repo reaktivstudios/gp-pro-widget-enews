@@ -127,7 +127,7 @@ class GP_Pro_Widget_Enews
 		if ( $screen->parent_file !== 'plugins.php' )
 			return;
 
-		if ( !is_plugin_active( 'genesis-palette-pro/genesis-palette-pro.php' ) ) :
+		if ( ! is_plugin_active( 'genesis-palette-pro/genesis-palette-pro.php' ) ) :
 
 			echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function.' ), 'gpwen' ).'</strong></p></div>';
 
