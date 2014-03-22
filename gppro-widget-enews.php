@@ -59,10 +59,13 @@ class GP_Pro_Widget_Enews
 		add_filter			(	'gppro_sections',					array(	$this,	'genesis_widgets_section'		),	10,	2	);
 
 		// Defaults
-		add_filter			(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'			),	15		);
+		add_filter			(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'			),	30		);
 
 		// Modify defaults if known child theme is set
-		add_filter			(	'gppro_enews_set_defaults',			array(	$this,	'enews_defaults_child_themes'	),	15		);
+		add_filter			(	'gppro_enews_set_defaults',			array(	$this,	'enews_defaults_child_themes'	),	10		);
+
+		// Override default checks
+		add_filter			(	'gppro_compare_default',			array(	$this,	'override_default_check'		)			);
 
 		// GP Pro CSS build filters
 		add_filter			(	'gppro_css_builder',				array(	$this,	'enews_widget_css'				),	10,	3	);
@@ -615,11 +618,11 @@ class GP_Pro_Widget_Enews
 
 		// General
 		$defaults['enews-widget-back']                             = '#333333';
-		$defaults['enews-widget-title-color']                      = '#ffffff';
-		$defaults['enews-widget-text-color']                       = '#999999';
+		$defaults['enews-widget-title-color']                      = '#ffffff'; // check default
+		$defaults['enews-widget-text-color']                       = '#999999'; // check default
 
 		// General Typography
-		$defaults['enews-widget-gen-stack']                        = 'lato';
+		$defaults['enews-widget-gen-stack']                        = isset( $defaults[ 'body-type-stack' ] ) ? $defaults[ 'body-type-stack' ]	: '';
 		$defaults['enews-widget-gen-size']                         = '16';
 		$defaults['enews-widget-gen-weight']                       = '300';
 		$defaults['enews-widget-gen-transform']                    = 'none';
@@ -628,7 +631,7 @@ class GP_Pro_Widget_Enews
 		// Field Inputs
 		$defaults['enews-widget-field-input-back']                 = '#ffffff';
 		$defaults['enews-widget-field-input-text-color']           = '#999999';
-		$defaults['enews-widget-field-input-stack']                = 'lato';
+		$defaults['enews-widget-field-input-stack']                = isset( $defaults[ 'body-type-stack' ] ) ? $defaults[ 'body-type-stack' ]	: '';
 		$defaults['enews-widget-field-input-size']                 = '14';
 		$defaults['enews-widget-field-input-weight']               = '300';
 		$defaults['enews-widget-field-input-transform']            = 'none';
@@ -647,7 +650,7 @@ class GP_Pro_Widget_Enews
 		$defaults['enews-widget-field-input-box-shadow']           = 'inherit';
 
 		// Submit Button
-		$defaults['enews-widget-button-back']                      = '#f15123';
+		$defaults['enews-widget-button-back']                      = isset( $defaults[ 'enews-widget-button-back' ] ) ? $defaults[ 'enews-widget-button-back' ]	: '';
 		$defaults['enews-widget-button-back-hov']                  = '#ffffff';
 		$defaults['enews-widget-button-text-color']                = '#ffffff';
 		$defaults['enews-widget-button-text-color-hov']            = '#333333';
@@ -668,6 +671,22 @@ class GP_Pro_Widget_Enews
 
 	}
 
+	public function override_default_check( $field ) {
+
+		if ( 'minimum-pro' != get_stylesheet() ) {
+			return true;
+		}
+
+		if ( 'enews-widget-back' == $field ||
+			 'enews-widget-title-color' == $field
+			) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	public function enews_defaults_child_themes( $defaults ) {
 
 		// Set defaults based on child theme (if known)
@@ -676,6 +695,12 @@ class GP_Pro_Widget_Enews
 			// Minimum Pro Child theme
 			case 'minimum-pro':
 				$defaults['enews-widget-button-back']                      = '#0ebfe9';
+				// Minimum doesn't have padding on sidebar widgets, which appears to be unique in child themes
+				// Minimum's defaults make the enews default look terrible. Resetting the background color and widget title color
+				// make it look a bit better. This only works because we override the default check above for these two
+				// attributes as well.
+				$defaults['enews-widget-back']                             = isset( $defaults['sidebar-widget-back'] ) ? $defaults['sidebar-widget-back'] : '#ffffff';
+				$defaults['enews-widget-title-color']                      = isset( $defaults['home-widget-single-title-text'] ) ? $defaults['home-widget-single-title-text'] : '#333333'; // A similar title as the default, otherwise just choose dark
 				break;
 
 			// Metro Pro Child theme
