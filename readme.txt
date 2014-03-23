@@ -2,7 +2,7 @@
 Contributors: norcross, jjeaton, reaktivstudios
 Requires at least: 3.5
 Tested up to: 3.8.1
-Stable tag: 0.0.1.1
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -10,9 +10,7 @@ Genesis Design Palette Pro add-on for the Genesis eNews Extended widget.
 
 == Description ==
 
-Genesis Design Palette Pro add-on for the Genesis eNews Extended widget.
-
-Supports defaults for all child themes currently supported by Genesis Design Palette Pro.
+Genesis Design Palette Pro add-on for the Genesis eNews Extended widget. Provides matching defaults for the eNews widget for all child themes supported by Genesis Design Palette and allows customization of typography, colors and spacing.
 
 == Installation ==
 1. Upload the `gp-pro-widget-enews` folder and all its contents to the `/wp-content/plugins/` directory
@@ -24,6 +22,6 @@ Supports defaults for all child themes currently supported by Genesis Design Pal
 
 == Changelog ==
 
-= 0.0.1.1 =
+= 1.0.0 =
 
 * Initial release
