@@ -4,7 +4,7 @@ Plugin Name: Genesis Design Palette Pro - eNews Widget
 Plugin URI: http://genesisdesignpro.com
 Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Extended widget.
 Author: Reaktiv Studios
-Version: 1.0.0
+Version: 1.0.1
 Requires at least: 3.5
 Author URI: http://reaktivstudios.com
 */
@@ -33,7 +33,7 @@ if ( ! defined( 'GPWEN_DIR' ) ) {
 }
 
 if ( ! defined( 'GPWEN_VER' ) ) {
-	define( 'GPWEN_VER', '1.0.0' );
+	define( 'GPWEN_VER', '1.0.1' );
 }
 
 class GP_Pro_Widget_Enews {
