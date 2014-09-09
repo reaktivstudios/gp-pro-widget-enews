@@ -123,25 +123,27 @@ class GP_Pro_Widget_Enews {
 	 *
 	 * @return GP_Pro_Widget_Enews
 	 */
-
 	public function gppro_active_check() {
-
+		// get the current screen
 		$screen = get_current_screen();
-
-		if ( $screen->parent_file !== 'plugins.php' )
+		// bail if not on the plugins page
+		if ( $screen->parent_file !== 'plugins.php' ) {
 			return;
-
-		if ( ! is_plugin_active( 'genesis-palette-pro/genesis-palette-pro.php' ) ) :
-
-			echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function.' ), 'gpwen' ).'</strong></p></div>';
-
-			// hide activation method
-			unset( $_GET['activate'] );
-
-			deactivate_plugins( plugin_basename( __FILE__ ) );
-
-		endif;
-
+		}
+		// run the active check
+		$coreactive	= class_exists( 'Genesis_Palette_Pro' ) ? Genesis_Palette_Pro::check_active() : false;
+		// active. bail
+		if ( $coreactive ) {
+			return;
+		}
+		// not active. show message
+		echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function and cannot be activated.' ), 'gpwen' ).'</strong></p></div>';
+		// hide activation method
+		unset( $_GET['activate'] );
+		// deactivate the plugin
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		// and finish
+		return;
 	}
 
 	/**
