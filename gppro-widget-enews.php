@@ -860,7 +860,7 @@ class GP_Pro_Widget_Enews {
 				$defaults['enews-widget-field-input-box-shadow']           = 'none';
 
 				// Submit Button
-				$defaults['enews-widget-button-back']                      = 'f5f5f5';
+				$defaults['enews-widget-button-back']                      = '#f5f5f5';
 				$defaults['enews-widget-button-back-hov']                  = '#e14d43';
 				$defaults['enews-widget-button-text-color']                = '#000000';
 				$defaults['enews-widget-button-text-color-hov']            = '#ffffff';
