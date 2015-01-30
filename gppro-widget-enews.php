@@ -70,9 +70,6 @@ class GP_Pro_Widget_Enews {
 		// Override default checks
 		add_filter(	'gppro_compare_default',			array(	$this,	'override_default_check'		)			);
 
-		// filter widget args that aren't eNews for styling
-		add_filter( 'dynamic_sidebar_params',           array(	$this,	'enews_widget_args'		        )			);
-
 		// activation hooks
 		register_deactivation_hook( __FILE__,			array(	$this,	'enews_clear_check'				)			);
 	}
@@ -946,25 +943,6 @@ class GP_Pro_Widget_Enews {
 		// delete the dismissed setting
 		delete_option( 'gppro-warning-'.$plugininfo['file'] );
 
-	}
-
-	/**
-	 * filter the widget args to set a class on all
-	 * widgets other than enews to allow for
-	 * styling overrides
-	 *
-	 * @param  [type] $params [description]
-	 * @return [type]         [description]
-	 */
-	public function enews_widget_args( $params ) {
-
-		// look for any that aren't enews
-		if ( ! empty( $params[0]['widget_name'] ) && $params[0]['widget_name'] !== 'Genesis - eNews Extended' ) {
-			$params[0]['before_widget'] = str_replace( 'class="', 'class="widget-not-enews ', $params[0]['before_widget'] );
-		}
-
-		// return the params
-		return $params;
 	}
 
 /// end class
