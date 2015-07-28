@@ -76,19 +76,19 @@ class GP_Pro_Widget_Enews {
 
 	/**
 	 * If an instance exists, this returns it.  If not, it creates one and
-	 * retuns it.
+	 * returns it.
 	 *
-	 * @return GP_Pro_Widget_Enews
+	 * @return void
 	 */
-
 	public static function getInstance() {
 
+		// check for self instance
 		if ( ! self::$instance ) {
 			self::$instance = new self;
 		}
 
+		// return the instance
 		return self::$instance;
-
 	}
 
 	/**
@@ -96,11 +96,8 @@ class GP_Pro_Widget_Enews {
 	 *
 	 * @return
 	 */
-
 	public function textdomain() {
-
 		load_plugin_textdomain( 'gpwen', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
 	}
 
 	/**
@@ -108,14 +105,13 @@ class GP_Pro_Widget_Enews {
 	 *
 	 * @return widget dependency info
 	 */
+	public static function plugin_info() {
 
-	static function plugin_info() {
-
+		// just return the array data
 		return array(
 			'name'	=> __( 'Genesis eNews Extended', 'gpwen' ),
 			'file'	=> 'genesis-enews-extended/plugin.php'
 		);
-
 	}
 
 	/**
@@ -124,24 +120,32 @@ class GP_Pro_Widget_Enews {
 	 * @return GP_Pro_Widget_Enews
 	 */
 	public function gppro_active_check() {
+
 		// get the current screen
 		$screen = get_current_screen();
+
 		// bail if not on the plugins page
-		if ( $screen->parent_file !== 'plugins.php' ) {
+		if ( ! is_object( $screen ) || empty( $screen->parent_file ) || 'plugins.php' !== $screen->parent_file ) {
 			return;
 		}
+
 		// run the active check
 		$coreactive	= class_exists( 'Genesis_Palette_Pro' ) ? Genesis_Palette_Pro::check_active() : false;
+
 		// active. bail
 		if ( $coreactive ) {
 			return;
 		}
+
 		// not active. show message
 		echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function and cannot be activated.' ), 'gpwen' ).'</strong></p></div>';
+
 		// hide activation method
 		unset( $_GET['activate'] );
+
 		// deactivate the plugin
 		deactivate_plugins( plugin_basename( __FILE__ ) );
+
 		// and finish
 		return;
 	}
@@ -166,7 +170,6 @@ class GP_Pro_Widget_Enews {
 				'</a>'
 			);
 		}
-
 	}
 
 	/**
@@ -174,50 +177,48 @@ class GP_Pro_Widget_Enews {
 	 *
 	 * @return notice
 	 */
-
 	public function enews_active_check() {
 
+		// get the current screen
 		$screen = get_current_screen();
 
-		if ( $screen->base !== 'genesis_page_genesis-palette-pro' ) {
+		// bail if not on the DPP page
+		if ( ! is_object( $screen ) || empty( $screen->base ) || 'genesis_page_genesis-palette-pro' !== $screen->base ) {
 			return;
 		}
 
 		// get our Genesis Plugin dependency name
-		$plugininfo	= self::plugin_info();
+		$info   = self::plugin_info();
 
-		// check for dismissed setting
-		$ignored	= get_option( 'gppro-warning-'.$plugininfo['file'] );
+		// set the file and name
+		$file   = esc_attr( $plugininfo['file'] );
+		$name   = esc_attr( $plugininfo['name'] );
 
-		if ( $ignored == 1 )
+		// Check our ignore flag.
+		if ( false !== $ignore = GP_Pro_Helper::get_single_option( 'gppro-warning-' . $file, '', false ) ) {
 			return;
+		}
 
 		// check if plugin is active, display warning
-		$enews_plugin_active	= is_plugin_active( $plugininfo['file'] );
-
-		if ( ! $enews_plugin_active ) :
+		if ( false === $active = is_plugin_active( $file ) ) {
 
 			echo '<div id="message" class="error fade below-h2 gppro-admin-warning"><p>';
-			echo '<strong>'.__( 'Warning: You have the '.$plugininfo['name'].' widget add-on enabled but do not have the '.$plugininfo['name'].' plugin active.', 'gpwen' ).'</strong>';
-			echo '<span class="ignore" data-child="'.$plugininfo['file'].'">'.__( 'Ignore this message', 'gpwen' ).'</span>';
+			echo '<strong>'.__( 'Warning: You have the ' . $name . ' widget add-on enabled but do not have the ' . $name . ' plugin active.', 'gpwen' ).'</strong>';
+			echo '<span class="ignore" data-child="' . $file . '">' . __( 'Ignore this message', 'gpwen' ) . '</span>';
 			echo '</p></div>';
-
-		endif;
-
-
+		}
 	}
-
 
 	/**
 	 * add block to side
 	 *
 	 * @return
 	 */
-
 	public function genesis_widgets_block( $blocks ) {
 
 		// Only add the block if it's not already set (another Genesis widget plugin has already added it)
 		if ( ! isset( $blocks['genesis-widgets'] ) ) {
+
 			$blocks['genesis-widgets'] = array(
 				'tab'		=> __( 'Genesis Widgets', 'gpwen' ),
 				'title'		=> __( 'Genesis Widgets', 'gpwen' ),
@@ -225,8 +226,8 @@ class GP_Pro_Widget_Enews {
 			);
 		}
 
+		// return all the blocks
 		return $blocks;
-
 	}
 
 	/**
@@ -234,7 +235,6 @@ class GP_Pro_Widget_Enews {
 	 *
 	 * @return
 	 */
-
 	public function genesis_widgets_section( $sections, $class ) {
 
 		$genesis_widgets	= array(
@@ -677,10 +677,16 @@ class GP_Pro_Widget_Enews {
 			$sections['genesis_widgets'] = $genesis_widgets;
 		}
 
+		// return the sections
 		return $sections;
-
 	}
 
+	/**
+	 * set the defaults
+	 *
+	 * @param  [type] $defaults [description]
+	 * @return [type]           [description]
+	 */
 	public function enews_defaults_base( $defaults ) {
 
 		// General
