@@ -4,11 +4,13 @@ Plugin Name: Genesis Design Palette Pro - eNews Widget
 Plugin URI: http://genesisdesignpro.com
 Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Extended widget.
 Author: Reaktiv Studios
-Version: 1.0.3
+Version: 1.0.4-dev
 Requires at least: 3.8
 Author URI: http://reaktivstudios.com
 */
-/*  Copyright 2013 Andrew Norcross, Josh Eaton
+
+/*
+	Copyright 2013 Andrew Norcross, Josh Eaton
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -33,7 +35,7 @@ if ( ! defined( 'GPWEN_DIR' ) ) {
 }
 
 if ( ! defined( 'GPWEN_VER' ) ) {
-	define( 'GPWEN_VER', '1.0.3' );
+	define( 'GPWEN_VER', '1.0.4-dev' );
 }
 
 class GP_Pro_Widget_Enews {
@@ -52,26 +54,29 @@ class GP_Pro_Widget_Enews {
 	private function __construct() {
 
 		// general backend
-		add_action(	'plugins_loaded',					array(	$this,	'textdomain'					)			);
-		add_action(	'admin_notices',					array(	$this,	'gppro_active_check'			),	10		);
-		add_action(	'admin_notices',					array(	$this,	'gppro_version_check'			),	10		);
-		add_action(	'admin_notices',					array(	$this,	'enews_active_check'			),	10		);
+		add_action(	'plugins_loaded',					array( $this, 'textdomain'					)			);
+		add_action(	'admin_notices',					array( $this, 'gppro_active_check'			),	10		);
+		add_action(	'admin_notices',					array( $this, 'gppro_version_check'			),	10		);
+		add_action(	'admin_notices',					array( $this, 'enews_active_check'			),	10		);
 
 		// GP Pro specific
-		add_filter(	'gppro_admin_block_add',			array(	$this,	'genesis_widgets_block'			),	61		);
-		add_filter(	'gppro_sections',					array(	$this,	'genesis_widgets_section'		),	10,	2	);
+		add_filter(	'gppro_admin_block_add',			array( $this, 'genesis_widgets_block'		),	61		);
+		add_filter(	'gppro_sections',					array( $this, 'genesis_widgets_section'		),	10,	2	);
 
 		// Defaults
-		add_filter(	'gppro_set_defaults',				array(	$this,	'enews_defaults_base'			),	30		);
+		add_filter(	'gppro_set_defaults',				array( $this, 'enews_defaults_base'			),	30		);
 
 		// Modify defaults if known child theme is set
-		add_filter(	'gppro_enews_set_defaults',			array(	$this,	'enews_defaults_child_themes'	),	10		);
+		add_filter(	'gppro_enews_set_defaults',			array( $this, 'enews_defaults_child_themes'	),	10		);
 
 		// Override default checks
-		add_filter(	'gppro_compare_default',			array(	$this,	'override_default_check'		)			);
+		add_filter(	'gppro_compare_default',			array( $this, 'override_default_check'		)			);
+
+		// Check for placeholder text changes.
+		add_filter( 'gppro_css_builder',                array( $this, 'placeholder_text_filter'     ),  50, 3   );
 
 		// activation hooks
-		register_deactivation_hook( __FILE__,			array(	$this,	'enews_clear_check'				)			);
+		register_deactivation_hook( __FILE__,			array( $this, 'enews_clear_check'			)			);
 	}
 
 	/**
@@ -101,17 +106,28 @@ class GP_Pro_Widget_Enews {
 	}
 
 	/**
-	 * set widget dependency data
+	 * Set widget dependency data.
 	 *
-	 * @return widget dependency info
+	 * @param  string $key      optional key to return
+	 *
+	 * @return array/strng      either the individual string, or the entire array
 	 */
-	public static function plugin_info() {
+	public function plugin_info( $key = '' ) {
 
-		// just return the array data
-		return array(
+		// Build the array data.
+		$data   = array(
 			'name'	=> __( 'Genesis eNews Extended', 'gpwen' ),
-			'file'	=> 'genesis-enews-extended/plugin.php'
+			'file'	=> 'genesis-enews-extended/plugin.php',
+			'key'   => 'genesis-enews',
 		);
+
+		// Return all of it if requested.
+		if ( empty( $key ) ) {
+			return $data;
+		}
+
+		// Return the specific key, or false if that key does not exist.
+		return ! empty( $key ) && array_key_exists( $key, $data ) ? $data[ $key ] : false;
 	}
 
 	/**
@@ -121,32 +137,26 @@ class GP_Pro_Widget_Enews {
 	 */
 	public function gppro_active_check() {
 
-		// get the current screen
-		$screen = get_current_screen();
-
-		// bail if not on the plugins page
-		if ( ! is_object( $screen ) || empty( $screen->parent_file ) || 'plugins.php' !== $screen->parent_file ) {
+		// Confirm we are on the correct screen to check.
+		if ( class_exists( 'GP_Pro_Utilities' ) && false === $check = GP_Pro_Utilities::check_current_dpp_screen( 'plugins.php' ) ) {
 			return;
 		}
 
-		// run the active check
-		$coreactive	= class_exists( 'Genesis_Palette_Pro' ) ? Genesis_Palette_Pro::check_active() : false;
-
-		// active. bail
-		if ( $coreactive ) {
+		// Confirm that DPP isn't active before proceeding.
+		if ( class_exists( 'Genesis_Palette_Pro' ) && false !== $active = Genesis_Palette_Pro::check_active() ) {
 			return;
 		}
 
-		// not active. show message
-		echo '<div id="message" class="error fade below-h2"><p><strong>'.__( sprintf( 'This plugin requires Genesis Design Palette Pro to function and cannot be activated.' ), 'gpwen' ).'</strong></p></div>';
+		// DPP is not active. show message.
+		echo '<div id="message" class="error notice is-dismissible"><p><strong>' . __( sprintf( 'This plugin requires Genesis Design Palette Pro to function and cannot be activated.' ), 'gpwen' ) . '</strong></p></div>';
 
-		// hide activation method
+		// Hide activation method.
 		unset( $_GET['activate'] );
 
-		// deactivate the plugin
+		// Deactivate the plugin.
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 
-		// and finish
+		// And finish.
 		return;
 	}
 
@@ -160,16 +170,18 @@ class GP_Pro_Widget_Enews {
 	 */
 	public function gppro_version_check() {
 
-		$dpp_version = defined( 'GPP_VER' ) ? GPP_VER : 0;
-
-		if ( version_compare( $dpp_version, '1.3.0', '<' ) ) {
-			printf(
-				'<div class="updated"><p>' . esc_html__( 'Please upgrade %2$sDesign Palette Pro to version 1.3.0 or greater%3$s to continue using the %1$s extension.', 'gppro' ) . '</p></div>',
-				'<strong>' . 'Genesis Design Palette Pro - eNews Widget' . '</strong>',
-				'<a href="' . esc_url( admin_url( 'plugins.php?plugin_status=upgrade' ) ) . '">',
-				'</a>'
-			);
+		// Check against our version of DPP.
+		if ( ! class_exists( 'GP_Pro_Utilities' ) || class_exists( 'GP_Pro_Utilities' ) && false !== $check = GP_Pro_Utilities::check_dpp_version( '1.3.0' ) ) {
+			return;
 		}
+
+		// Output the message regarding updates.
+		printf(
+			'<div class="updated"><p>' . esc_html__( 'Please upgrade %2$sDesign Palette Pro to version 1.3.0 or greater%3$s to continue using the %1$s extension.', 'gppro' ) . '</p></div>',
+			'<strong>' . 'Genesis Design Palette Pro - eNews Widget' . '</strong>',
+			'<a href="' . esc_url( admin_url( 'plugins.php?plugin_status=upgrade' ) ) . '">',
+			'</a>'
+		);
 	}
 
 	/**
@@ -179,32 +191,35 @@ class GP_Pro_Widget_Enews {
 	 */
 	public function enews_active_check() {
 
-		// get the current screen
-		$screen = get_current_screen();
-
-		// bail if not on the DPP page
-		if ( ! is_object( $screen ) || empty( $screen->base ) || 'genesis_page_genesis-palette-pro' !== $screen->base ) {
+		// Confirm we are on the correct screen to check.
+		if ( class_exists( 'GP_Pro_Utilities' ) && false === $check = GP_Pro_Utilities::check_current_dpp_screen() ) {
 			return;
 		}
 
 		// get our Genesis Plugin dependency name
-		$info   = self::plugin_info();
+		$info   = $this->plugin_info();
+
+		// Bail without our file, name, or key.
+		if ( empty( $info['file'] ) || empty( $info['name'] ) || empty( $info['key'] ) ) {
+			return;
+		}
 
 		// set the file and name
-		$file   = esc_attr( $plugininfo['file'] );
-		$name   = esc_attr( $plugininfo['name'] );
+		$file   = esc_attr( $info['file'] );
+		$name   = esc_attr( $info['name'] );
+		$key    = esc_attr( $info['key'] );
 
 		// Check our ignore flag.
-		if ( false !== $ignore = GP_Pro_Helper::get_single_option( 'gppro-warning-' . $file, '', false ) ) {
+		if ( class_exists( 'GP_Pro_Helper' ) && false !== $ignore = GP_Pro_Helper::get_single_option( 'gppro-warning-' . $key, '', false ) ) {
 			return;
 		}
 
 		// check if plugin is active, display warning
 		if ( false === $active = is_plugin_active( $file ) ) {
 
-			echo '<div id="message" class="error fade below-h2 gppro-admin-warning"><p>';
-			echo '<strong>'.__( 'Warning: You have the ' . $name . ' widget add-on enabled but do not have the ' . $name . ' plugin active.', 'gpwen' ).'</strong>';
-			echo '<span class="ignore" data-child="' . $file . '">' . __( 'Ignore this message', 'gpwen' ) . '</span>';
+			echo '<div id="message" class="error notice gppro-admin-warning gppro-admin-warning-' . $key . '"><p>';
+			echo '<strong>' . __( 'Warning: You have the ' . $name . ' widget add-on enabled but do not have the ' . $name . ' plugin active.', 'gpwen' ) . '</strong>';
+			echo '<span class="ignore" data-child="' . $key . '">' . __( 'Ignore this message', 'gpwen' ) . '</span>';
 			echo '</p></div>';
 		}
 	}
@@ -216,7 +231,7 @@ class GP_Pro_Widget_Enews {
 	 */
 	public function genesis_widgets_block( $blocks ) {
 
-		// Only add the block if it's not already set (another Genesis widget plugin has already added it)
+		// Only add the block if it's not already set (another Genesis widget plugin has already added it).
 		if ( ! isset( $blocks['genesis-widgets'] ) ) {
 
 			$blocks['genesis-widgets'] = array(
@@ -226,7 +241,7 @@ class GP_Pro_Widget_Enews {
 			);
 		}
 
-		// return all the blocks
+		// Return all the blocks.
 		return $blocks;
 	}
 
@@ -331,6 +346,13 @@ class GP_Pro_Widget_Enews {
 			'enews-widget-field-inputs'	=> array(
 				'title'		=> __( 'Field Inputs', 'gpwen' ),
 				'data'		=> array(
+
+					'enews-widget-field-input-colors-divider' => array(
+						'title'		=> __( 'Colors', 'gpwen' ),
+						'input'		=> 'divider',
+						'style'		=> 'block-thin'
+					),
+
 					'enews-widget-field-input-back'	=> array(
 						'label'		=> __( 'Background', 'gpwen' ),
 						'input'		=> 'color',
@@ -339,19 +361,25 @@ class GP_Pro_Widget_Enews {
 						'selector'	=> 'background-color'
 					),
 					'enews-widget-field-input-text-color'	=> array(
-						'label'		=> __( 'Font Color', 'gpwen' ),
+						'label'		=> __( 'Input Text', 'gpwen' ),
 						'input'		=> 'color',
 						'target'	=> array( '.enews-widget input[type="text"]', '.enews-widget input[type="email"]' ),
 						'builder'	=> 'GP_Pro_Builder::hexcolor_css',
 						'selector'	=> 'color'
 					),
-
+					'enews-widget-field-place-text-color'	=> array( // Target and Builder removed on purpose.
+						'label'		=> __( 'Placeholder Text', 'gpwen' ),
+						'input'		=> 'color',
+						'selector'	=> 'color',
+						'tip'		=> __( 'Placeholder text color will not be viewable in the preview window until after settings are saved.', 'gpwen' )
+					),
 
 					'enews-widget-field-input-typography-divider' => array(
 						'title'		=> __( 'Typography', 'gpwen' ),
 						'input'		=> 'divider',
 						'style'		=> 'block-thin'
 					),
+
 					'enews-widget-field-input-stack'	=> array(
 						'label'		=> __( 'Font Stack', 'gpwen' ),
 						'input'		=> 'font-stack',
@@ -382,8 +410,6 @@ class GP_Pro_Widget_Enews {
 						'builder'	=> 'GP_Pro_Builder::text_css',
 						'selector'	=> 'text-transform'
 					),
-
-
 
 					'enews-widget-field-input-borders-divider' => array(
 						'title'		=> __( 'Borders', 'gpwen' ),
@@ -704,6 +730,7 @@ class GP_Pro_Widget_Enews {
 		// Field Inputs
 		$defaults['enews-widget-field-input-back']                 = '#ffffff';
 		$defaults['enews-widget-field-input-text-color']           = '#999999';
+		$defaults['enews-widget-field-place-text-color']           = '#666666';
 		$defaults['enews-widget-field-input-stack']                = isset( $defaults[ 'body-type-stack' ] ) ? $defaults[ 'body-type-stack' ]	: '';
 		$defaults['enews-widget-field-input-size']                 = '14';
 		$defaults['enews-widget-field-input-weight']               = '300';
@@ -744,21 +771,34 @@ class GP_Pro_Widget_Enews {
 
 	}
 
-	public function override_default_check( $field ) {
+	/**
+	 * Set our field override.
+	 *
+	 * @param  [type] $field [description]
+	 * @return [type]        [description]
+	 */
+	public function override_default_check( $field = '' ) {
 
-		if ( 'minimum-pro' != get_stylesheet() ) {
+		// First check for Minimum Pro.
+		if ( get_stylesheet() !== 'minimum-pro' ) {
 			return true;
 		}
 
-		if ( 'enews-widget-back' == $field ||
-			 'enews-widget-title-color' == $field ) {
-
+		// Check the specific fields.
+		if ( ! empty( $field ) && 'enews-widget-back' == $field || ! empty( $field ) && 'enews-widget-title-color' == $field ) {
 			return false;
 		}
 
+		// Now return true.
 		return true;
 	}
 
+	/**
+	 * Set the child theme default values.
+	 *
+	 * @param  [type] $defaults [description]
+	 * @return [type]           [description]
+	 */
 	public function enews_defaults_child_themes( $defaults ) {
 
 		// Set defaults based on child theme (if known)
@@ -936,19 +976,53 @@ class GP_Pro_Widget_Enews {
 	}
 
 	/**
-	 * clear warning check setting
+	 * Clear warning check setting.
 	 *
 	 * @return void
 	 */
-
 	public function enews_clear_check() {
 
-		// get our plugin dependency name
-		$plugininfo	= self::plugin_info();
+		// Delete the dismissed setting.
+		if ( false !== $file = $this->plugin_info( 'file' ) ) {
+			delete_option( 'gppro-warning-' . $file );
+		}
+	}
 
-		// delete the dismissed setting
-		delete_option( 'gppro-warning-'.$plugininfo['file'] );
+	/**
+	 * Checks the settings for field input placeholder text color.
+	 *
+	 * @param  [type] $setup [description]
+	 * @param  [type] $data  [description]
+	 * @param  [type] $class [description]
+	 * @return [type]        [description]
+	 */
+	public function placeholder_text_filter( $setup, $data, $class ) {
 
+		// Check for a change in the placeholder text color.
+		if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-place-text-color' ) ) {
+
+			// Pull my color variable out of the data array
+			$color   = esc_attr( $data['enews-widget-field-place-text-color'] );
+
+			// CSS entries for webkit.
+			$setup  .= $class . ' .enews-widget input[type="text"]::-webkit-input-placeholder { color: ' . $color . ' }' . "\n";
+			$setup  .= $class . ' .enews-widget input[type="email"]::-webkit-input-placeholder { color: ' . $color . ' }' . "\n";
+
+			// CSS entries for Firefox 18 and below.
+			$setup  .= $class . ' .enews-widget input[type="text"]:-moz-placeholder { color: ' . $color . ' }' . "\n";
+			$setup  .= $class . ' .enews-widget input[type="email"]:-moz-placeholder { color: ' . $color . ' }' . "\n";
+
+			// CSS entries for Firefox 19 and above.
+			$setup  .= $class . ' .enews-widget input[type="text"]::-moz-placeholder { color: ' . $color . ' }' . "\n";
+			$setup  .= $class . ' .enews-widget input[type="email"]::-moz-placeholder { color: ' . $color . ' }' . "\n";
+
+			// CSS entries for IE.
+			$setup  .= $class . ' .enews-widget input[type="text"]:-ms-input-placeholder { color: ' . $color . ' }' . "\n";
+			$setup  .= $class . ' .enews-widget input[type="email"]:-ms-input-placeholder { color: ' . $color . ' }' . "\n";
+		}
+
+		// Return the CSS values.
+		return $setup;
 	}
 
 /// end class
