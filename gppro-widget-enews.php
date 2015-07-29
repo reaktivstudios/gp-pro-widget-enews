@@ -4,7 +4,7 @@ Plugin Name: Genesis Design Palette Pro - eNews Widget
 Plugin URI: http://genesisdesignpro.com
 Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Extended widget.
 Author: Reaktiv Studios
-Version: 1.0.4-dev
+Version: 1.0.4
 Requires at least: 3.8
 Author URI: http://reaktivstudios.com
 */
@@ -27,7 +27,7 @@ Author URI: http://reaktivstudios.com
 */
 
 if ( ! defined( 'GPWEN_BASE' ) ) {
-	define( 'GPWEN_BASE', plugin_basename(__FILE__) );
+	define( 'GPWEN_BASE', plugin_basename( __FILE__ ) );
 }
 
 if ( ! defined( 'GPWEN_DIR' ) ) {
@@ -35,7 +35,7 @@ if ( ! defined( 'GPWEN_DIR' ) ) {
 }
 
 if ( ! defined( 'GPWEN_VER' ) ) {
-	define( 'GPWEN_VER', '1.0.4-dev' );
+	define( 'GPWEN_VER', '1.0.4' );
 }
 
 class GP_Pro_Widget_Enews {
@@ -83,7 +83,7 @@ class GP_Pro_Widget_Enews {
 	 * If an instance exists, this returns it.  If not, it creates one and
 	 * returns it.
 	 *
-	 * @return void
+	 * @return $instance
 	 */
 	public static function getInstance() {
 
@@ -166,7 +166,6 @@ class GP_Pro_Widget_Enews {
 	 * Requires version 1.3.0+
 	 *
 	 * @since 1.0.1
-	 *
 	 */
 	public function gppro_version_check() {
 
@@ -724,7 +723,7 @@ class GP_Pro_Widget_Enews {
 		$defaults['enews-widget-text-color']                       = '#999999'; // check default
 
 		// General Typography
-		$defaults['enews-widget-gen-stack']                        = isset( $defaults[ 'body-type-stack' ] ) ? $defaults[ 'body-type-stack' ]   : '';
+		$defaults['enews-widget-gen-stack']                        = isset( $defaults['body-type-stack'] ) ? $defaults['body-type-stack']   : '';
 		$defaults['enews-widget-gen-size']                         = '16';
 		$defaults['enews-widget-gen-weight']                       = '300';
 		$defaults['enews-widget-gen-transform']                    = 'none';
@@ -734,7 +733,7 @@ class GP_Pro_Widget_Enews {
 		$defaults['enews-widget-field-input-back']                 = '#ffffff';
 		$defaults['enews-widget-field-input-text-color']           = '#999999';
 		$defaults['enews-widget-field-place-text-color']           = '#666666';
-		$defaults['enews-widget-field-input-stack']                = isset( $defaults[ 'body-type-stack' ] ) ? $defaults[ 'body-type-stack' ]   : '';
+		$defaults['enews-widget-field-input-stack']                = isset( $defaults['body-type-stack'] ) ? $defaults['body-type-stack']   : '';
 		$defaults['enews-widget-field-input-size']                 = '14';
 		$defaults['enews-widget-field-input-weight']               = '300';
 		$defaults['enews-widget-field-input-transform']            = 'none';
@@ -753,7 +752,7 @@ class GP_Pro_Widget_Enews {
 		$defaults['enews-widget-field-input-box-shadow']           = 'inherit';
 
 		// Submit Button
-		$defaults['enews-widget-button-back']                      = isset( $defaults[ 'enews-widget-button-back' ] ) ? $defaults[ 'enews-widget-button-back' ] : '';
+		$defaults['enews-widget-button-back']                      = isset( $defaults['enews-widget-button-back'] ) ? $defaults['enews-widget-button-back'] : '';
 		$defaults['enews-widget-button-back-hov']                  = '#ffffff';
 		$defaults['enews-widget-button-text-color']                = '#ffffff';
 		$defaults['enews-widget-button-text-color-hov']            = '#333333';
@@ -851,9 +850,9 @@ class GP_Pro_Widget_Enews {
 				// General
 				$defaults['enews-widget-back']                             = '';
 				$defaults['enews-widget-title-color']                      = '#333333';
-				$defaults['enews-widget-gen-stack']                        = isset( $defaults[ 'sidebar-widget-content-stack' ] ) ? $defaults[ 'sidebar-widget-content-stack' ] : '';
+				$defaults['enews-widget-gen-stack']                        = isset( $defaults['sidebar-widget-content-stack'] ) ? $defaults['sidebar-widget-content-stack'] : '';
 				$defaults['enews-widget-field-input-text-color']           = '#666666';
-				$defaults['enews-widget-field-input-stack']                = isset( $defaults[ 'sidebar-widget-content-stack' ] ) ? $defaults[ 'sidebar-widget-content-stack' ] : '';
+				$defaults['enews-widget-field-input-stack']                = isset( $defaults['sidebar-widget-content-stack'] ) ? $defaults['sidebar-widget-content-stack'] : '';
 				$defaults['enews-widget-field-input-size']                 = '18';
 				$defaults['enews-widget-field-input-border-radius']        = '0';
 				$defaults['enews-widget-field-input-pad-top']              = '12';
@@ -879,24 +878,24 @@ class GP_Pro_Widget_Enews {
 				$defaults['enews-widget-button-margin-bottom']             = '0';
 				break;
 
-			// Daily Dish Pro Child theme
+			// Daily Dish Pro Child theme.
 			case 'daily-dish-pro':
-				// General
+				// General.
 				$defaults['enews-widget-back']                             = '';
-				$defaults['enews-widget-title-color']                      = '#ffffff'; // check default
+				$defaults['enews-widget-title-color']                      = '#ffffff'; // Check default.
 				$defaults['enews-widget-text-color']                       = '#000000';
 
-				// General Typography
-				$defaults['enews-widget-gen-stack']                        = isset( $defaults[ 'sidebar-widget-content-stack' ] ) ? $defaults[ 'sidebar-widget-content-stack' ] : '';
+				// General Typography.
+				$defaults['enews-widget-gen-stack']                        = isset( $defaults['sidebar-widget-content-stack'] ) ? $defaults['sidebar-widget-content-stack'] : '';
 				$defaults['enews-widget-gen-size']                         = '18';
 				$defaults['enews-widget-gen-weight']                       = '400';
 				$defaults['enews-widget-gen-transform']                    = 'none';
 				$defaults['enews-widget-gen-text-margin-bottom']           = '20';
 
-				// Field Inputs
+				// Field Inputs.
 				$defaults['enews-widget-field-input-back']                 = '#ffffff';
 				$defaults['enews-widget-field-input-text-color']           = '#999999';
-				$defaults['enews-widget-field-input-stack']                = isset( $defaults[ 'sidebar-widget-content-stack' ] ) ? $defaults[ 'sidebar-widget-content-stack' ] : '';
+				$defaults['enews-widget-field-input-stack']                = isset( $defaults['sidebar-widget-content-stack'] ) ? $defaults['sidebar-widget-content-stack'] : '';
 				$defaults['enews-widget-field-input-size']                 = '16';
 				$defaults['enews-widget-field-input-weight']               = '400';
 				$defaults['enews-widget-field-input-border-radius']        = '0';
@@ -908,7 +907,7 @@ class GP_Pro_Widget_Enews {
 				$defaults['enews-widget-field-input-margin-bottom']        = '16';
 				$defaults['enews-widget-field-input-box-shadow']           = 'none';
 
-				// Submit Button
+				// Submit Button.
 				$defaults['enews-widget-button-back']                      = '#f5f5f5';
 				$defaults['enews-widget-button-back-hov']                  = '#e14d43';
 				$defaults['enews-widget-button-text-color']                = '#000000';
@@ -924,29 +923,34 @@ class GP_Pro_Widget_Enews {
 				$defaults['enews-widget-button-margin-bottom']             = '0';
 				break;
 
-			// Lifestyle Pro Child theme
+			// Lifestyle Pro Child theme.
 			case 'lifestyle-pro':
-				// set a default color
+
+				// Set a default color.
 				$base = '';
-				// check for class and proceed
+
+				// Check for class and proceed.
 				if ( class_exists( 'GP_Pro_Lifestyle_Pro' ) ) {
-					// fetch the variable color choice array
+
+					// Fetch the variable color choice array.
 					$colors = GP_Pro_Lifestyle_Pro::theme_color_choice();
-					// now use base
+
+					// Now use base.
 					$base   = ! empty( $colors['base'] ) ? $colors['base'] : '';
 				}
-				// General
+
+				// General.
 				$defaults['enews-widget-back']                             = '';
 				$defaults['enews-widget-title-color']                      = '#222222';
 				$defaults['enews-widget-text-color']                       = '#a5a5a3';
 
-				// General Typography
+				// General Typography.
 				$defaults['enews-widget-gen-stack']                        = 'droid-sans';
 				$defaults['enews-widget-gen-size']                         = '15';
 				$defaults['enews-widget-gen-weight']                       = '300';
 				$defaults['enews-widget-gen-text-margin-bottom']           = '16';
 
-				// Field Inputs
+				// Field Inputs.
 				$defaults['enews-widget-field-input-stack']                = 'droid-sans';
 				$defaults['enews-widget-field-input-size']                 = '14';
 				$defaults['enews-widget-field-input-weight']               = '400';
@@ -954,7 +958,7 @@ class GP_Pro_Widget_Enews {
 				$defaults['enews-widget-field-input-border-radius']        = '0';
 				$defaults['enews-widget-field-input-border-color-focus']   = '#999999';
 
-				// Submit Button
+				// Submit Button.
 				$defaults['enews-widget-button-back']                      = $base;
 				$defaults['enews-widget-button-back-hov']                  = '#eeeee8';
 				$defaults['enews-widget-button-text-color']                = '#ffffff';
@@ -1004,7 +1008,7 @@ class GP_Pro_Widget_Enews {
 		// Check for a change in the placeholder text color.
 		if ( GP_Pro_Builder::build_check( $data, 'enews-widget-field-place-text-color' ) ) {
 
-			// Pull my color variable out of the data array
+			// Pull my color variable out of the data array.
 			$color   = esc_attr( $data['enews-widget-field-place-text-color'] );
 
 			// CSS entries for webkit.
@@ -1028,8 +1032,7 @@ class GP_Pro_Widget_Enews {
 		return $setup;
 	}
 
-/// end class
-}
+} // End class.
 
-// Instantiate our class
+// Instantiate our class.
 $GP_Pro_Widget_Enews = GP_Pro_Widget_Enews::getInstance();

@@ -2,7 +2,7 @@
 Contributors: norcross, jjeaton, reaktivstudios
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.0.4-dev
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ Genesis Design Palette Pro add-on for the Genesis eNews Extended widget. Provide
 = 1.0.4: 2015-07-29 =
 
 * Updated field setup to match eNews Extended 2.0 changes
+* General code cleanup
 
 = 1.0.3: 2014-10-17 =
 
