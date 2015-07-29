@@ -170,8 +170,11 @@ class GP_Pro_Widget_Enews {
 	 */
 	public function gppro_version_check() {
 
+		// Fetch our version number for DPP.
+		$plugin = defined( 'GPP_VER' ) ? GPP_VER : 0;
+
 		// Check against our version of DPP.
-		if ( ! class_exists( 'GP_Pro_Utilities' ) || class_exists( 'GP_Pro_Utilities' ) && false !== $check = GP_Pro_Utilities::check_dpp_version( '1.3.0' ) ) {
+		if ( version_compare( $plugin, '1.3.0', '>=' ) >= 0 ) {
 			return;
 		}
 
@@ -283,14 +286,14 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-title-color'	=> array(
 						'label'		=> __( 'Title Color', 'gpwen' ),
 						'input'		=> 'color',
-						'target'	=> '.enews-widget .widget-title',
+						'target'	=> '.enews-widget .enews .widget-title',
 						'builder'	=> 'GP_Pro_Builder::hexcolor_css',
 						'selector'	=> 'color'
 					),
 					'enews-widget-text-color'	=> array(
 						'label'		=> __( 'Text Color', 'gpwen' ),
 						'input'		=> 'color',
-						'target'	=> '.enews-widget',
+						'target'	=> '.enews-widget .enews',
 						'builder'	=> 'GP_Pro_Builder::hexcolor_css',
 						'selector'	=> 'color'
 					),
