@@ -28,9 +28,14 @@ Genesis Design Palette Pro add-on for the Genesis eNews Extended widget. Provide
 
 ## Changelog ##
 
+### 1.0.5: 2015-08-05 ###
+
+* Added version check to ensure function availability
+
 ### 1.0.4: 2015-07-29 ###
 
 * Updated field setup to match eNews Extended 2.0 changes
+* Adding support for placeholder text color
 * General code cleanup
 
 ### 1.0.3: 2014-10-17 ###
