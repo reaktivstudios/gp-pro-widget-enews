@@ -4,7 +4,7 @@ Plugin Name: Genesis Design Palette Pro - eNews Widget
 Plugin URI: http://genesisdesignpro.com
 Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Extended widget.
 Author: Reaktiv Studios
-Version: 1.0.5
+Version: 1.0.6-dev
 Requires at least: 3.8
 Author URI: http://reaktivstudios.com
 */
@@ -35,7 +35,7 @@ if ( ! defined( 'GPWEN_DIR' ) ) {
 }
 
 if ( ! defined( 'GPWEN_VER' ) ) {
-	define( 'GPWEN_VER', '1.0.5' );
+	define( 'GPWEN_VER', '1.0.6-dev' );
 }
 
 class GP_Pro_Widget_Enews {
@@ -348,13 +348,11 @@ class GP_Pro_Widget_Enews {
 			'enews-widget-field-inputs' => array(
 				'title'     => __( 'Field Inputs', 'gpwen' ),
 				'data'      => array(
-
 					'enews-widget-field-input-colors-divider' => array(
 						'title'     => __( 'Colors', 'gpwen' ),
 						'input'     => 'divider',
 						'style'     => 'block-thin'
 					),
-
 					'enews-widget-field-input-back' => array(
 						'label'     => __( 'Background', 'gpwen' ),
 						'input'     => 'color',
@@ -375,13 +373,11 @@ class GP_Pro_Widget_Enews {
 						'selector'  => 'color',
 						'tip'       => __( 'Placeholder text color will not be viewable in the preview window until after settings are saved.', 'gpwen' )
 					),
-
 					'enews-widget-field-input-typography-divider' => array(
 						'title'     => __( 'Typography', 'gpwen' ),
 						'input'     => 'divider',
 						'style'     => 'block-thin'
 					),
-
 					'enews-widget-field-input-stack'    => array(
 						'label'     => __( 'Font Stack', 'gpwen' ),
 						'input'     => 'font-stack',
@@ -412,7 +408,6 @@ class GP_Pro_Widget_Enews {
 						'builder'   => 'GP_Pro_Builder::text_css',
 						'selector'  => 'text-transform'
 					),
-
 					'enews-widget-field-input-borders-divider' => array(
 						'title'     => __( 'Borders', 'gpwen' ),
 						'input'     => 'divider',
@@ -481,8 +476,6 @@ class GP_Pro_Widget_Enews {
 						'max'       => '10',
 						'step'      => '1'
 					),
-
-
 					'enews-widget-field-input-padding-margins-divider' => array(
 						'title'     => __( 'Padding & Margin', 'gpwen' ),
 						'input'     => 'divider',
@@ -538,8 +531,6 @@ class GP_Pro_Widget_Enews {
 						'max'       => '48',
 						'step'      => '1'
 					),
-
-
 					'enews-widget-field-input-box-shadow'   => array(
 						'label'     => __( 'Box Shadow', 'gpwen' ),
 						'input'     => 'radio',
@@ -572,7 +563,7 @@ class GP_Pro_Widget_Enews {
 						'label'     => __( 'Background', 'gpwen' ),
 						'sub'       => __( 'Base', 'gpwen' ),
 						'input'     => 'color',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::hexcolor_css',
 						'selector'  => 'background-color'
 					),
@@ -580,7 +571,12 @@ class GP_Pro_Widget_Enews {
 						'label'     => __( 'Background', 'gpwen' ),
 						'sub'       => __( 'Hover', 'gpwen' ),
 						'input'     => 'color',
-						'target'    => array( '.enews-widget input:hover[type="submit"]', '.enews-widget input:focus[type="submit"]' ),
+						'target'    => array(
+							'.enews-widget input:hover[type="submit"]',
+							'.enews-widget input:focus[type="submit"]',
+							'.sidebar .enews-widget input:hover[type="submit"]',
+							'.sidebar .enews-widget input:focus[type="submit"]',
+						),
 						'builder'   => 'GP_Pro_Builder::hexcolor_css',
 						'selector'  => 'background-color'
 					),
@@ -588,7 +584,7 @@ class GP_Pro_Widget_Enews {
 						'label'     => __( 'Font Color', 'gpwen' ),
 						'sub'       => __( 'Base', 'gpwen' ),
 						'input'     => 'color',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::hexcolor_css',
 						'selector'  => 'color'
 					),
@@ -596,12 +592,15 @@ class GP_Pro_Widget_Enews {
 						'label'     => __( 'Font Color', 'gpwen' ),
 						'sub'       => __( 'Hover', 'gpwen' ),
 						'input'     => 'color',
-						'target'    => array( '.enews-widget input:hover[type="submit"]', '.enews-widget input:focus[type="submit"]' ),
+						'target'    => array(
+							'.enews-widget input:hover[type="submit"]',
+							'.enews-widget input:focus[type="submit"]',
+							'.sidebar .enews-widget input:hover[type="submit"]',
+							'.sidebar .enews-widget input:focus[type="submit"]',
+						),
 						'builder'   => 'GP_Pro_Builder::hexcolor_css',
 						'selector'  => 'color'
 					),
-
-
 					'enews-widget-button-typography-divider' => array(
 						'title'     => __( 'Typography', 'gpwen' ),
 						'input'     => 'divider',
@@ -610,7 +609,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-stack' => array(
 						'label'     => __( 'Font Stack', 'gpwen' ),
 						'input'     => 'font-stack',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::stack_css',
 						'selector'  => 'font-family'
 					),
@@ -618,14 +617,14 @@ class GP_Pro_Widget_Enews {
 						'label'     => __( 'Font Size', 'gpwen' ),
 						'input'     => 'font-size',
 						'scale'     => 'text',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'font-size'
 					),
 					'enews-widget-button-weight'    => array(
 						'label'     => __( 'Font Weight', 'gpwen' ),
 						'input'     => 'font-weight',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::number_css',
 						'selector'  => 'font-weight',
 						'tip'       => __( 'Certain fonts will not display every weight.', 'gpwen' )
@@ -633,12 +632,10 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-transform' => array(
 						'label'     => __( 'Text Appearance', 'gpwen' ),
 						'input'     => 'text-transform',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::text_css',
 						'selector'  => 'text-transform'
 					),
-
-
 					'enews-widget-button-padding-divider' => array(
 						'title'     => __( 'Padding & Margin', 'gpwen' ),
 						'input'     => 'divider',
@@ -647,7 +644,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-pad-top'   => array(
 						'label'     => __( 'Top', 'gpwen' ),
 						'input'     => 'spacing',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'padding-top',
 						'min'       => '0',
@@ -657,7 +654,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-pad-bottom'    => array(
 						'label'     => __( 'Bottom', 'gpwen' ),
 						'input'     => 'spacing',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'padding-bottom',
 						'min'       => '0',
@@ -667,7 +664,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-pad-left'  => array(
 						'label'     => __( 'Left', 'gpwen' ),
 						'input'     => 'spacing',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'padding-left',
 						'min'       => '0',
@@ -677,7 +674,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-pad-right' => array(
 						'label'     => __( 'Right', 'gpwen' ),
 						'input'     => 'spacing',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'padding-right',
 						'min'       => '0',
@@ -687,7 +684,7 @@ class GP_Pro_Widget_Enews {
 					'enews-widget-button-margin-bottom' => array(
 						'label'     => __( 'Bottom Margin', 'gpwen' ),
 						'input'     => 'spacing',
-						'target'    => '.enews-widget input[type="submit"]',
+						'target'    => array( '.enews-widget input[type="submit"]', '.sidebar .enews-widget input[type="submit"]' ),
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'margin-bottom',
 						'min'       => '0',
@@ -699,7 +696,7 @@ class GP_Pro_Widget_Enews {
 		); // end section
 
 		// If another plugin has created the genesis widgets block, then merge ours in, otherwise we can set it.
-		if ( isset( $sections['genesis_widgets'] )) {
+		if ( isset( $sections['genesis_widgets'] ) ) {
 			$sections['genesis_widgets'] = array_merge( $sections['genesis_widgets'], $genesis_widgets );
 		} else {
 			$sections['genesis_widgets'] = $genesis_widgets;
