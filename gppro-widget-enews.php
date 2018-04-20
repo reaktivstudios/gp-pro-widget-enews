@@ -6,11 +6,11 @@ Description: Genesis Design Palette Pro add-on for styling the Genesis eNews Ext
 Author: Reaktiv Studios
 Version: 1.0.6-dev
 Requires at least: 3.8
-Author URI: http://reaktivstudios.com
+Author URI: https://genesisdesignpro.com
 */
 
 /*
-	Copyright 2013 Andrew Norcross, Josh Eaton
+	Copyright 2018 Reaktiv Studios, Josh Eaton
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
