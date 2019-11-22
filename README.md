@@ -3,9 +3,9 @@
 
 **Requires at least:** 3.8
 
-**Tested up to:** 4.9.5
+**Tested up to:** 5.3
 
-**Stable tag:** 1.0.6-dev
+**Stable tag:** 1.0.7
 
 **License:** GPLv2 or later
 
