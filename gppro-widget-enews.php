@@ -445,7 +445,7 @@ class GP_Pro_Widget_Enews {
 						'builder'   => 'GP_Pro_Builder::px_css',
 						'selector'  => 'border-radius',
 						'min'       => '0',
-						'max'       => '16',
+						'max'       => '100',
 						'step'      => '1'
 					),
 					'enews-widget-field-input-border-color-focus'   => array(
