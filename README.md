@@ -1,16 +1,10 @@
 # Genesis Design Palette Pro - eNews Widget #
-**Contributors:** norcross, jjeaton, reaktivstudios
-
-**Requires at least:** 3.8
-
-**Tested up to:** 5.4
-
-**Stable tag:** 1.0.7
-
-**License:** GPLv2 or later
-
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
-
+Contributors: norcross, jjeaton, reaktivstudios
+Requires at least: 3.8
+Tested up to: 5.3
+Stable tag: 1.0.7
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Genesis Design Palette Pro add-on for the Genesis eNews Extended widget.
 
