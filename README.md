@@ -22,6 +22,11 @@ Genesis Design Palette Pro add-on for the Genesis eNews Extended widget. Provide
 
 ## Changelog
 
+### 1.0.6: 2020-04-15
+
+* Improve selectors for several items
+* Increase border radius range for button
+
 ### 1.0.5: 2015-08-05
 
 * Added version check to ensure function availability
